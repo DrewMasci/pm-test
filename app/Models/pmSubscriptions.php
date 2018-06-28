@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class pm_test_api_table extends Model
+class pmSubscriptions extends Model
 {
     //
 }

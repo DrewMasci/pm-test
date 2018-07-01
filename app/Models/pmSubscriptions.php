@@ -46,7 +46,7 @@ class pmSubscriptions extends Model
 
     private function expandMsisdn($msisdn)
     {
-        if(is_array($msisdn) || substr($msisdn, 0, 1) === 'A') return $msisdn;
+        if(is_array($msisdn)) return $msisdn;
 
         $alias = $this->getAlias($msisdn);
 
@@ -68,6 +68,22 @@ class pmSubscriptions extends Model
             $temp[] = $converted_msisdn;
             $alias = $this->getAlias($converted_msisdn);
         }
+        else if(substr($msisdn, 0, 1) === 'A') {
+            $sub = new pmSubscriptions();
+
+            $records = $sub->where('alias', $msisdn)
+                ->whereNull('deleted_at')
+                ->get();
+
+            $sizeof_records = sizeof($records);
+            if($sizeof_records > 0) {
+                for($j = 0; $j < $sizeof_records; $j++) {
+                    $temp[] = $records[$j]->msisdn;
+                }
+            }
+        }
+
+        dd($temp);
 
         if(is_string($alias) && strlen($alias) === 13 && !in_array($alias, $temp)) {
             $temp[] = $alias;
@@ -91,6 +107,10 @@ class pmSubscriptions extends Model
                 'response' => 'failed',
                 'error' => 'a record with these exact details already exists'
            ];
+        }
+
+        if(!isset($data['alias'])) {
+            $data['alias'] = $this->getAlias($data['msisdn']);
         }
 
         $subscription = new pmSubscriptions();

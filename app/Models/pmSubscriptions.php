@@ -169,7 +169,16 @@ class pmSubscriptions extends Model
             $data['msisdn'] = $this->expandMsisdn($data['msisdn']);
         }
 
+        $not_fields = [
+            'start_date' => '>=',
+            'end_date' => '<='
+        ];
+
         foreach($data as $field => $value) {
+            if(isset($not_fields[$field])) {
+                continue;
+            }
+
             if($value !== null) {
                 if(stripos($subscription->toSql(), 'where') === false || $operator === 'AND') {
                     $subscription = $subscription->where($field, $value);
@@ -179,7 +188,20 @@ class pmSubscriptions extends Model
                 }
             }
         }
-        if($bypass_error) $subscription = $subscription->whereNull('deleted_at');
+
+        foreach($not_fields as $index => $operator) {
+            if(isset($data[$index]) && !empty($data[$index])) {
+                if(!is_numeric($data[$index])) {
+                    $data[$index] = strtotime(str_replace('/', '-', $data[$index]));
+                }
+
+                $subscription = $subscription->whereRaw("UNIX_TIMESTAMP(created_at) $operator $data[$index]");
+            }
+        }
+
+        if($bypass_error) {
+            $subscription = $subscription->whereNull('deleted_at');
+        }
 
         $results = $subscription->get();
 

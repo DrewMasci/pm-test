@@ -36,11 +36,19 @@ class pmSubscriptions extends Model
         return true;
     }
 
+    public function getAlias($msisdn)
+    {
+        $alias = file_get_contents('http://interview.pmcservices.co.uk/alias/lookup?msisdn=' . $msisdn);
+
+        if(substr($alias, 0, 1) === 'A') return $alias;
+        return null;
+    }
+
     private function expandMsisdn($msisdn)
     {
         if(is_array($msisdn) || substr($msisdn, 0, 1) === 'A') return $msisdn;
 
-        $alias = file_get_contents('http://interview.pmcservices.co.uk/alias/lookup?msisdn=' . $msisdn);
+        $alias = $this->getAlias($msisdn);
 
         $temp = [$msisdn];
 
@@ -52,13 +60,13 @@ class pmSubscriptions extends Model
             $converted_msisdn = str_replace('+44', '0', $msisdn);
 
             $temp[] = $converted_msisdn;
-            $alias = file_get_contents('http://interview.pmcservices.co.uk/alias/lookup?msisdn=' . $converted_msisdn);
+            $alias = $this->getAlias($converted_msisdn);
         }
         else if(substr($msisdn, 0, 1) === '0') {
             $converted_msisdn = '+44' . substr($msisdn, 1);
 
             $temp[] = $converted_msisdn;
-            $alias = file_get_contents('http://interview.pmcservices.co.uk/alias/lookup?msisdn=' . $converted_msisdn);
+            $alias = $this->getAlias($converted_msisdn);
         }
 
         if(is_string($alias) && strlen($alias) === 13 && !in_array($alias, $temp)) {

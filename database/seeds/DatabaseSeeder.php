@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\pmSubscriptions;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,13 +35,17 @@ class DatabaseSeeder extends Seeder
         $max_products_index = sizeof($product_codes) - 1;
         $max_msisdn_index = sizeof($msisdn_numbers) - 1;
         $start_time = time();
+        $sub = new pmSubscriptions();
 
         while(time() < $start_time + (60 * 10))
         {
+            $msisdn = $msisdn_numbers[rand(0, $max_msisdn_index)];
+
             DB::table('pm_subscriptions')
                 ->insert([
-                    'msisdn' => $msisdn_numbers[rand(0, $max_msisdn_index)],
+                    'msisdn' => $msisdn,
                     'product_id' => $product_codes[rand(0, $max_products_index)],
+                    'alias' => $sub->getAlias($msisdn),
                     'created_at' => date('Y-m-d H:i:s')
                 ]);
         }

@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
             '123456',
             'This is a test',
             'abc',
-            'phone products Samsugn',
-            'Samsugn affiliates',
-            'O2 Samsugn affiliate',
+            'phone products Samsung',
+            'Samsung affiliates',
+            'O2 Samsung affiliate',
             'O2 mobile network'
         ];
 

@@ -26,7 +26,9 @@ class subscriptionApi extends Controller
     {
         $data = [
             'msisdn' => $request->input('msisdn'),
-            'product_id' => $request->input('product_id')
+            'product_id' => $request->input('product_id'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date')
         ];
 
         $sub = new pmSubscriptions();

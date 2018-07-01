@@ -18,3 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('add-sub', 'subscriptionApi@addSubscription');
+Route::get('search', 'subscriptionApi@search');
+Route::get('un-sub', 'subscriptionApi@deleteSubscription');

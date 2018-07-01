@@ -29,7 +29,7 @@ class pmSubscriptions extends Model
               $error_messages[] = "optional attribute, $index, not set";
             }
         }
-        if(sizeof($error_messages) === sizeof($optional) && !empty($optional)) {
+        if(sizeof($error_messages) === sizeof($optional) && !empty($optional) && empty($manditory)) {
             return $error_messages;
         }
 
@@ -82,8 +82,6 @@ class pmSubscriptions extends Model
                 }
             }
         }
-
-        dd($temp);
 
         if(is_string($alias) && strlen($alias) === 13 && !in_array($alias, $temp)) {
             $temp[] = $alias;
@@ -148,8 +146,14 @@ class pmSubscriptions extends Model
            ];
         }
 
+        $ids = [];
+
+        foreach($records as $record) {
+            $ids[] = $record->id;
+        }
+
         $subscription = new pmSubscriptions();
-        $subscription->where('id', $records[0]->id)
+        $subscription->whereIn('id', $ids)
             ->update(['deleted_at' => date('Y-m-d H:i:s')]);
 
         return [

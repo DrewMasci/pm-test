@@ -191,27 +191,4 @@ class pmSubscriptions extends Model
         }
         return $results;
     }
-
-    public function coolSearchForData($data)
-    {
-        $subscription = new pmSubscriptions();
-
-        if(isset($data['msisdn'])) {
-            $data['msisdn'] = $this->expandMsisdn($data['msisdn']);
-        }
-
-        foreach($data as $field => $value) {
-            if($value !== null) {
-                if(stripos($subscription->toSql(), 'where') === false) {
-                    $subscription = $subscription->where($field, 'like', '%'. $value .'%');
-                }
-                else {
-                    $subscription = $subscription->orWhere($field, 'like', '%'. $value .'%');
-                }
-            }
-        }
-        $subscription = $subscription->whereNull('deleted_at');
-
-        $doesExist = $subscription->get();
-    }
 }

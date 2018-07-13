@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
         $start_time = time();
         $sub = new pmSubscriptions();
 
-        while(time() < $start_time + (60 * 10))
+        while(time() < $start_time + (60 * 1))
         {
             $msisdn = $msisdn_numbers[rand(0, $max_msisdn_index)];
 

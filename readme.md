@@ -8,14 +8,12 @@ Pull the project.
 - Install [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/).
 - Edit the `.env.example` to be `.env`.
 - Run `docker-compose build && docker-compose up -d`
-- Run `docker exec -it pm-test_app_1 /bin/bash`
-- In the terminal that appears, run `php artisan migrate`
 
-### Dummy Data
+This process will take sometimes about 2 minutes to create containers and seed the database
 
-If you wish to populate the database with dummy data:
-- Run `docker exec -it pm-test_app_1 /bin/bash`
-- In the terminal that appears, run `php artisan db:seed`
+Dummy data is generated as part of this process.
+
+---
 
 ### Endpoints
 

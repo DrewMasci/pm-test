@@ -10,5 +10,7 @@ COPY . /var/www
 RUN composer dump-autoload --optimize
 RUN php artisan key:generate
 RUN php artisan config:cache
-CMD php artisan serve --host=0.0.0.0 --port=8009
-EXPOSE 8009
+# CMD php artisan serve --host=0.0.0.0 --port=8009
+# COPY ./run.sh /tmp
+ENTRYPOINT ["/var/www/run.sh"]
+EXPOSE 8000

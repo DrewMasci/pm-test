@@ -6,8 +6,9 @@ WORKDIR /var/www
 COPY composer.json /var/www
 COPY composer.lock /var/www
 RUN composer install --no-scripts --no-autoloader --no-interaction --no-progress
-RUN php artisan key:generate
 COPY . /var/www
 RUN composer dump-autoload --optimize
-CMD php artisan serve --host=0.0.0.0 --port=8000
-EXPOSE 8000
+RUN php artisan key:generate
+RUN php artisan config:cache
+CMD php artisan serve --host=0.0.0.0 --port=8009
+EXPOSE 8009

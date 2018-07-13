@@ -1,12 +1,21 @@
+# pm-test
+---
+
+### Setup
+
 Pull the project.
 
-- `composer install`.
-- Edit the .env.example to be .env.
-- Configure your DB settings.
-- Run `php artisan migrate`.
+- Install [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/).
+- Edit the `.env.example` to be `.env`.
+- Run `docker-compose build && docker-compose up -d`
 
-if you wish to populate the database with dummy data:
-- `php artisan db:seed`
+This process will take sometimes about 2 minutes to create containers and seed the database
+
+Dummy data is generated as part of this process.
+
+---
+
+### Endpoints
 
 Call `/api/add-sub` with the parameters `msisdn`, and `product_id` to insert a
 subscription into the system. When inserting the subscription, and if it is not
